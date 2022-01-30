@@ -34,7 +34,7 @@ class ryuk(commands.AutoShardedBot):
             strip_after_prefix=True,
             help_command=ryukHelp(),
             cached_messages=10000,
-            activity=discord.Activity(type=discord.ActivityType.playing, name="under maintenance"),
+            activity=discord.Activity(type=discord.ActivityType.playing, name="ryuk.wtf/discord"),
         )
         cluster = motor.AsyncIOMotorClient(MONGO_DB_URL if not beta else MONGO_DB_URL_BETA)
         self.session = aiohttp.ClientSession()
