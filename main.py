@@ -3,6 +3,8 @@ from config import BOT_TOKEN, BOT_TOKEN_BETA, OWNERS
 from utils.bot import ryuk
 from os import environ
 import discord
+import os
+import sys
 basicConfig(level=INFO)
 import asyncio
 from utils import database as db
