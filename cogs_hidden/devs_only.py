@@ -37,6 +37,23 @@ class Devsonly(commands.Cog):
         await after.edit(nick=self.forced_nicks[before.id], reason="haha forcenick go br")
 
     @commands.is_owner()
+    @commands.command(name="new", description="Update the avatar & icon", hidden=True)
+    async def new(self, ctx, new_avatar):
+      avatar = new_avatar.replace(" -i", "")
+      response = await ctx.bot.session.get(avatar)
+      try: await ctx.bot.user.edit(avatar=await response.read())
+      except Exception as error: 
+        embed = discord.Embed(color=0x010101)
+        embed.set_author(name=ctx.author, icon_url= ctx.author.avatar.url)
+        embed.description = f"```\n{error}```"
+        return await ctx.send(embed=embed)
+      try:
+        if "-i" in new_avatar:
+          await ctx.guild.edit(icon=await response.read())
+      except: pass
+      await ctx.message.add_reaction("👍")     
+
+    @commands.is_owner()
     @commands.command(help="Change the bot's status")
     async def changestatus(self, ctx: commands.Context, *, status: str):
         await self.client.change_presence(

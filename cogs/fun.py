@@ -21,7 +21,7 @@ from owotext import OwO
 from dadjokes import Dadjoke
 from discord.utils import escape_markdown
 from utils.bot import ryuk
-from ryuk_images.effects import ascii
+from epicbot_images.effects import ascii
 from io import BytesIO
 
 uwu = OwO()

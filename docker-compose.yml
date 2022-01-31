@@ -1,0 +1,72 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: miso-db
+    image: mariadb
+    restart: unless-stopped
+    volumes:
+      - database:/var/lib/mysql
+      - ./sql/init:/docker-entrypoint-initdb.d:ro
+      - ./sql/scheduled:/scripts:ro
+    environment:
+      - MARIADB_USER=admin
+      - MARIADB_PASSWORD=password
+      - MARIADB_DATABASE=ryuk
+      - MARIADB_ROOT_PASSWORD=jay
+    networks:
+      - botnet
+    labels:
+      ofelia.enabled: 'true'
+      ofelia.job-exec.daily-clear.schedule: '@daily'
+      ofelia.job-exec.daily-clear.command: sh -c "mysql -ubot -pbotpw -D misobot < /scripts/clear_activity_day.sql"
+      ofelia.job-exec.weekly-clear.schedule: '@weekly'
+      ofelia.job-exec.weekly-clear.command: sh -c "mysql -ubot -pbotpw -D misobot < /scripts/clear_activity_week.sql"
+      ofelia.job-exec.monthly-clear.schedule: '@monthly'
+      ofelia.job-exec.monthly-clear.command: sh -c "mysql -ubot -pbotpw -D misobot < /scripts/clear_activity_month.sql"
+
+  image-server:
+    container_name: image-server
+    build: https://github.com/joinemm/sushii-image-server.git#main
+    restart: unless-stopped
+    init: true
+    cap_add:
+      - SYS_ADMIN
+    expose:
+      - 3000
+    networks:
+      - botnet
+
+  ofelia:
+    image: mcuadros/ofelia:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  bot:
+    container_name: miso-bot
+    build: .
+    command: python main.py
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - botnet
+    ports:
+      - '3306:3306'
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=127.0.0.1
+      - IMAGE_SERVER_HOST=image-server
+      - WEBSERVER_HOSTNAME=miso-bot
+
+networks:
+  botnet:
+    driver: bridge
+
+volumes:
+  database:

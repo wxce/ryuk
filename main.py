@@ -7,12 +7,10 @@ import os
 import sys
 basicConfig(level=INFO)
 import asyncio
-from utils import database as db
 
 
 client = ryuk()
 
-database = db.Database()
 
 
 environ.setdefault("JISHAKU_HIDE", "1")

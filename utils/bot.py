@@ -13,6 +13,7 @@ from config import (
 )
 from discord.ext import commands, tasks
 from pymongo import UpdateOne
+from modules import cache, log, maria, util
 from utils.classes import Profile
 from utils.embed import success_embed
 from utils.ui import TicketView, DropDownSelfRoleView, ButtonSelfRoleView
@@ -39,6 +40,8 @@ class ryuk(commands.AutoShardedBot):
         cluster = motor.AsyncIOMotorClient(MONGO_DB_URL if not beta else MONGO_DB_URL_BETA)
         self.session = aiohttp.ClientSession()
         
+        self.db2 = maria.MariaDB(self)
+        self.cache = cache.Cache(self)
 
         self.cache_loaded = False
         self.cogs_loaded = False
@@ -93,7 +96,7 @@ class ryuk(commands.AutoShardedBot):
             self.cogs_loaded = True
 
     async def close(self):
-        await self.db.cleanup()
+        await self.db2.cleanup()
         await super().close()
 
     async def set_default_guild_config(self, guild_id):

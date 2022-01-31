@@ -9,7 +9,7 @@ from utils.embed import error_embed
 from utils.bot import ryuk
 from utils.flags import EnhanceCmdFlags
 from typing import Optional, Union
-from ryuk_images import memes, effects, gif_effects
+from epicbot_images import memes, effects, gif_effects
 from handler import SlashCommandOption, InteractionContext, slash_command
 
 wiggle_concurrency = []
