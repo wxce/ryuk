@@ -17,23 +17,24 @@ from modules import cache, log, maria, util
 from utils.classes import Profile
 from utils.embed import success_embed
 from utils.ui import TicketView, DropDownSelfRoleView, ButtonSelfRoleView
-from utils.help import ryukHelp
 import pyfade
+logger = log.get_logger(__name__)
 
 class ryuk(commands.AutoShardedBot):
     def __init__(self, beta: bool = False):
         self.app_cmds: dict = {}
         self.beta = beta
+        self.logger = logger
         intents = discord.Intents.all()
         intents.members = True
         super().__init__(
             owner_ids=OWNERS,
             command_prefix=ryuk.get_custom_prefix,
+            help_command=None,
             intents=intents,
             case_insensitive=True,
             allowed_mentions=discord.AllowedMentions.none(),
             strip_after_prefix=True,
-            help_command=ryukHelp(),
             cached_messages=10000,
             activity=discord.Activity(type=discord.ActivityType.playing, name="ryuk.wtf/discord"),
         )
