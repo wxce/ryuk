@@ -29,7 +29,7 @@ class misc(commands.Cog, description="Commands mostly related to the bot!"):
             return randint(0, 255)
 
     @commands.cooldown(1, 1, commands.BucketType.user)
-    @commands.command(name="hex", usage="[colour hex OR R value] [G value] [B value]", description="Generates a random colour.",
+    @commands.command(name="hex",description="Generates a random colour.",
                       aliases=["color", "randomcolor", "randomcolour", "colors", "colours", "rgb"])
     async def hex(self, ctx, r=None, g=None, b=None):
         if r:

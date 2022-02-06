@@ -4,7 +4,7 @@ from discord.ext import commands
 class help_ong(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    @commands.command(name="help", description="shows information fr")
+    @commands.command(name="help", description="shows information fr", hidden=True)
     async def help(self, ctx, *, command=None):
       if command != None:
         valid_command = self.bot.get_command(command)
@@ -19,7 +19,7 @@ class help_ong(commands.Cog):
       main_embed.description = "use da buttons"
       modules = []
       for temp_cog in self.bot.cogs:
-        if temp_cog.lower() in ("jishaku"): continue
+        if temp_cog.lower() in ("jishaku","devsonly","help_ong"): continue
         cog = ctx.bot.get_cog(temp_cog)
         commands = []
         for command in cog.walk_commands():

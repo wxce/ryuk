@@ -277,7 +277,7 @@ class user(commands.Cog, description="Commands related to the user!"):
             example = f"`{prefix}rankcard submit beauty A beautiful rankcard by Nirlep!`"
             if card is None:
                 return await ctx.reply(embed=error_embed(
-                    f"{EMOJIS['tick_no']} Invalid Usage!",
+                    f"{EMOJIS['tick_no']} invalid usage",
                     f"""
 please give a name to your submission.
 Example: {example}
@@ -291,7 +291,7 @@ Make sure to upload image as an attachment.
                 ))
             if description is None:
                 return await ctx.reply(embed=error_embed(
-                    f"{EMOJIS['tick_no']} Invalid Usage!",
+                    f"{EMOJIS['tick_no']} invalid usage",
                     f"""
 please give a description to your submission.
 Example: {example}
@@ -543,7 +543,7 @@ Make sure to upload image as an attachment.
             if not await check_voter(ctx.author.id) and not await check_supporter(ctx):
                 return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} Voter only!", "Global chat customization is limited to voters only, to avoid abuse."))
             if new_thing is None:
-                return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} Invalid Usage!", f"Correct Usage: `{prefix}editprofile nick <nickname>`"))
+                return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} invalid usage", f"Correct Usage: `{prefix}editprofile nick <nickname>`"))
             if len(new_thing) > 32:
                 return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} Too long!", "Nicknames cannot be greater than **32** characters."))
             for word in DEFAULT_BANNED_WORDS:
@@ -560,7 +560,7 @@ Make sure to upload image as an attachment.
 
         if thing.lower() in ['bio', 'description']:
             if new_thing is None:
-                return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} Invalid Usage!", f"Correct Usage: `{prefix}editprofile nick <nickname>`"))
+                return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} invalid usage", f"Correct Usage: `{prefix}editprofile nick <nickname>`"))
             if len(new_thing) > 250:
                 return await ctx.reply(embed=error_embed(f"{EMOJIS['tick_no']} Too long!", "your bio can't be greater than **250** characters."))
             for word in DEFAULT_BANNED_WORDS:
@@ -712,7 +712,7 @@ Make sure to upload image as an attachment.
         if user is None or reason is None:
             prefix = ctx.clean_prefix
             return await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Invalid Usage!",
+                f"{EMOJIS['tick_no']} invalid usage",
                 f"Correct Usage: `{prefix}report @user <reason>`\nExample: `{prefix}report @egirl abusing ryuk bug`\n\n**Note:** Spam reports will get you blacklisted."
             ))
         if user == self.client.user:
@@ -745,7 +745,7 @@ Make sure to upload image as an attachment.
         )
         await ctx.reply(f"{EMOJIS['tick_yes']} your report has been sent. please be patient for mods to review it.")
 
-    @commands.command(aliases=['opt-out', 'optout', 'nosnipe'], help="Opt out of snipe")
+    @commands.command(name="opt-out", aliases=['optout', 'nosnipe'], help="Opt out of snipe")
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def opt_out(self, ctx):
         user_profile = await self.client.get_user_profile_(ctx.author.id)

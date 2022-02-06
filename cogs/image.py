@@ -209,7 +209,7 @@ class image(commands.Cog, description="Cool image commands!"):
         path = await self.client.loop.run_in_executor(None, thing)
         return await ctx.reply(file=discord.File(path))
 
-    @commands.command(help="My heart when...", aliases=['myheart'])
+    @commands.command(name="my-heart", help="My heart when...", aliases=['myheart'])
     @commands.bot_has_permissions(attach_files=True)
     @commands.cooldown(3, 15, commands.BucketType.user)
     async def my_heart(self, ctx: commands.Context, *, sentences: str = None):
