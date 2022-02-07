@@ -63,20 +63,20 @@ class ErrorHandling(commands.Cog):
             retry_after = bucket.update_rate_limit()
             if retry_after and ctx.author.id not in OWNERS:
                 return await ctx.reply(embed=error_embed(
-                    f"{EMOJIS['tick_no']} Calm down!",
+                    f"{EMOJIS['tick_no']} slow down",
                     f"please try again after **{format_timespan(round(error.retry_after, 2))}**."),
                     delete_after=5
                 )
             await self.process_custom_cmds(ctx, ctx.invoked_with)
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Calm down!",
+                f"{EMOJIS['tick_no']} slow down",
                 f"please try again after **{format_timespan(round(error.retry_after, 2))}**.".format(error.retry_after)),
                 delete_after=5
             )
         elif isinstance(error, commands.MaxConcurrencyReached):
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Limit reached!",
+                f"{EMOJIS['tick_no']} slow down",
                 f"An instance of this command is already running...\nyou can only run `{error.number}` instances at the same time."
             ))
         elif isinstance(error, commands.MissingPermissions):
@@ -84,7 +84,7 @@ class ErrorHandling(commands.Cog):
                 return await ctx.reinvoke()
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Nah bro!",
+                f"{EMOJIS['tick_no']} missing permissions",
                 "you need **{}** perms to run this command.".format(' '.join(error.missing_permissions[0].split('_')).title())
             ))
         elif isinstance(error, commands.BotMissingPermissions):
@@ -111,55 +111,55 @@ class ErrorHandling(commands.Cog):
                 .add_field(name="Server", value=f"```{ctx.guild} ({ctx.guild.id})```", inline=False)
             )
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} No!",
+                f"{EMOJIS['tick_no']} missing access",
                 "you dont have access to use this command"
             ))
         elif isinstance(error, commands.MemberNotFound):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Not found!",
+                f"{EMOJIS['tick_no']} not found",
                 "I wasn't able to find **{}**, please try again.".format(error.argument)
             ))
         elif isinstance(error, commands.UserNotFound):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Not found!",
+                f"{EMOJIS['tick_no']} not found",
                 "I wasn't able to find **{}**, please try again.".format(error.argument)
             ))
         elif isinstance(error, commands.ChannelNotFound):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Not found!",
+                f"{EMOJIS['tick_no']} not found",
                 "No channel named **{}** was found, please try again.".format(error.argument)
             ))
         elif isinstance(error, commands.RoleNotFound):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Not found!",
+                f"{EMOJIS['tick_no']} not found",
                 "No role named **{}** was found, please try again.".format(error.argument)
             ))
         elif isinstance(error, commands.EmojiNotFound):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Not found!",
+                f"{EMOJIS['tick_no']} not found",
                 f"I wasn't able to find any emoji named: `{error.argument}`."
             ))
         elif isinstance(error, commands.PartialEmojiConversionFailure):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['tick_no']} Not found!",
+                f"{EMOJIS['tick_no']} not found",
                 f"I wasn't able to find any emoji named: `{error.argument}`."
             ))
         elif isinstance(error, NotVoted):
             await ctx.reply(embed=error_embed(
-                f"{EMOJIS['weirdchamp']} Voter only!",
-                f"This command is restricted to voters only.\nClick **[here]({VOTE_LINK})** to vote!"
+                f"{EMOJIS['weirdchamp']} voter only",
+                f"this command is restricted to voters only.\nClick **[here]({VOTE_LINK})** to vote!"
             ))
         elif isinstance(error, NotBotMod):
             ctx.command.reset_cooldown(ctx)
             await ctx.reply(embed=error_embed(
                 f"{EMOJIS['tick_no']} No!",
-                "Only bot moderators can use this command!"
+                "only bot moderators can use this command"
             ))
         elif isinstance(error, OptedOut):
             ctx.command.reset_cooldown(ctx)

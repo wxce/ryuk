@@ -10,10 +10,23 @@ basicConfig(level=INFO)
 import asyncio
 import json
 import asyncpg
+import sqlite3
 
 client = ryuk()
 
-
+print("checking db")
+con = sqlite3.connect("database.sqlite")
+cur = con.execute("SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name != 'sqlite_master' AND name != "
+                  "'sqlite_sequence'")
+numoftables = cur.fetchone()[0]
+if numoftables == 0:
+    print("detected empty database, initializing")
+    with open("makedatabase.sql", "r") as f:
+        makesql = f.read()
+    with con:
+        con.executescript(makesql)
+    print("initialized db!")
+con.close()
 
 environ.setdefault("JISHAKU_HIDE", "1")
 environ.setdefault("JISHAKU_NO_UNDERSCORE", "1")
