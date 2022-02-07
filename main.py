@@ -1,13 +1,15 @@
-from logging import basicConfig, INFO
+from logging import basicConfig, INFO, root
 from config import BOT_TOKEN, BOT_TOKEN_BETA, OWNERS
 from utils.bot import ryuk
 from os import environ
 import discord
 import os
 import sys
+from Tools.utils import getConfig, getGuildPrefix, updateConfig
 basicConfig(level=INFO)
 import asyncio
-
+import json
+import asyncpg
 
 client = ryuk()
 
@@ -43,8 +45,22 @@ async def on_global_commands_update(commands: list):
 async def on_guild_commands_update(commands: list, guild_id: int):
     print(f"{len(commands)} Guild commands updated for guild ID: {guild_id}")
 
+@client.event
+async def on_guild_join(guild, ctx):
+    data = getConfig(guild.id)
+    data["owner"] = ctx.guild.owner_id
+    updateConfig(guild.id, data)
 
 
+@client.event
+async def on_guild_remove(guild):
+    with open("config.json", "r") as f:
+        data = json.load(f)
+
+    del data["guilds"][str(guild.id)]
+
+    with open("config.json", "w") as f:
+        json.dump(data, f)
 
 async def mobile(self):
     payload = {'op': self.IDENTIFY,'d': {'token': self.token,'properties': {'$os': sys.platform,'$browser': 'Discord iOS','$device': 'discord.py','$referrer': '','$referring_domain': ''},'compress': True,'large_threshold': 250,'v': 3}}
@@ -58,6 +74,7 @@ async def mobile(self):
     await self.call_hooks("before_identify", self.shard_id, initial=self._initial_identify)
     await self.send_as_json(payload)
 discord.gateway.DiscordWebSocket.identify = mobile
+    
 
 if __name__ == '__main__':
     client.run(BOT_TOKEN if not client.beta else BOT_TOKEN_BETA)

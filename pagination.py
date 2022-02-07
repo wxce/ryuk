@@ -181,7 +181,7 @@ class Paginator(discord.ui.View):
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if self.usercheck:
             if not self.user == interaction.user:
-                await interaction.response.send_message(embed=discord.Embed(color=util.color('warning'), description=f"{interaction.user.mention}: You're not the **author** of this **embed**"), ephemeral=True)
+                await interaction.response.send_message(embed=discord.Embed(color=0x2828, description=f"{interaction.user.mention}: You're not the **author** of this **embed**"), ephemeral=True)
                 return False
         return True
 

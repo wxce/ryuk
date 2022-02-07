@@ -6,6 +6,8 @@ import discord
 import aiohttp
 import sys
 import traceback
+import asyncpg
+import asyncio
 
 from config import (
     MONGO_DB_URL, MONGO_DB_URL_BETA, DEFAULT_AUTOMOD_CONFIG,
@@ -37,6 +39,7 @@ class ryuk(commands.AutoShardedBot):
             strip_after_prefix=True,
             cached_messages=10000,
             activity=discord.Activity(type=discord.ActivityType.playing, name="ryuk.wtf/discord"),
+
         )
         cluster = motor.AsyncIOMotorClient(MONGO_DB_URL if not beta else MONGO_DB_URL_BETA)
         self.session = aiohttp.ClientSession()
@@ -99,6 +102,7 @@ class ryuk(commands.AutoShardedBot):
     async def close(self):
         await self.db2.cleanup()
         await super().close()
+
 
     async def set_default_guild_config(self, guild_id):
         pain = {
